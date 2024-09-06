@@ -1,6 +1,6 @@
 // server.js
 const express = require('express');
-const app = express();
+const app = require('./app');
 const PORT = process.env.PORT || 3000;
 
 // Middleware pour traiter les requêtes JSON
