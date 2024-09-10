@@ -1,7 +1,9 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const path = require('path');
 const thingRoutes = require('./routes/thingRoutes'); // Importer les routes Thing
 const userRoutes = require('./routes/userRoutes'); // Importer les routes utilisateurs
+const bookRoutes = require('./routes/bookRoutes'); // Importer les routes Livres
 
 const app = express();
 
@@ -22,15 +24,21 @@ app.use('/api/things', thingRoutes);
 // Utiliser les routes pour les utilisateurs
 app.use('/api/auth', userRoutes);
 
+// Utiliser les routes pour les livres
+app.use('/api/books', bookRoutes);
+
+// Middleware pour servir les fichiers statiques (images)
+app.use('/images', express.static(path.join(__dirname, 'images')));
+
 // Middleware pour gérer les erreurs 404 (non trouvé)
 app.use((req, res, next) => {
   res.status(404).json({ message: 'Route non trouvée !' });
 });
 
 // Démarrer le serveur
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`Serveur en cours d'exécution sur le port ${PORT}`);
+const server = app.listen(0, () => {
+  const port = server.address().port;
+  console.log(`Serveur en cours d'exécution sur le port ${port}`);
 });
 
 module.exports = app;
